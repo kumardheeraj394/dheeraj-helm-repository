@@ -2,25 +2,28 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: nodejsdbapp
-  namespace: argocd        # Argo CD's namespace (do not confuse with app's target namespace)
+  namespace: argocd  # Namespace where Argo CD is installed
 spec:
   project: default
-
   source:
     repoURL: https://github.com/kumardheeraj394/dheeraj-helm-repository.git
-    targetRevision: HEAD           # Or use a branch like "main"
-    path: .                        # Path to the Helm chart in the repo
+    targetRevision: HEAD
+    path: .                        # Adjust this if your chart is in a subdirectory
     helm:
+      releaseName: nodejsdbapp     # This is key: sets Helm release name
       valueFiles:
-        - values.yaml              # Can be customized or overridden if needed
+        - values.yaml
 
   destination:
     server: https://kubernetes.default.svc
-    namespace: nodejsdbapp         # The target namespace in your cluster
+    namespace: nodejsdbapp
 
   syncPolicy:
-    automated:                     # Optional: for auto-deploy
+    automated:
       selfHeal: true
       prune: true
     syncOptions:
       - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
+      - RespectIgnoreDifferences=true
+      - Replace=true
