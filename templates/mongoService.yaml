@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.mongoService.name }}
+  labels:
+    app: {{ .Values.mongoService.labels.app }}
+spec:
+  clusterIP: {{ .Values.mongoService.clusterIP }}
+  ports:
+    - port: {{ .Values.mongoService.port }}
+      targetPort: {{ .Values.mongoService.targetPort }}
+  selector:
+    app: {{ .Values.mongoService.selector.app }}
