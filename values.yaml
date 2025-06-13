@@ -77,4 +77,4 @@ mongoService:
 
 namespace:
   enabled: true
-  name: nodejsdbapp
+  name: nodejs-mongodb-app
