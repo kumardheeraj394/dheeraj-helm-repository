@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: nodejsdbapp
+  namespace: argocd        # Argo CD's namespace (do not confuse with app's target namespace)
+spec:
+  project: default
+
+  source:
+    repoURL: https://github.com/kumardheeraj394/dheeraj-helm-repository.git
+    targetRevision: HEAD           # Or use a branch like "main"
+    path: .                        # Path to the Helm chart in the repo
+    helm:
+      valueFiles:
+        - values.yaml              # Can be customized or overridden if needed
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: nodejsdbapp         # The target namespace in your cluster
+
+  syncPolicy:
+    automated:                     # Optional: for auto-deploy
+      selfHeal: true
+      prune: true
+    syncOptions:
+      - CreateNamespace=true
