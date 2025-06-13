@@ -1,40 +1,40 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}
+  name: {{ .Values.deployment.name }}
   labels:
-    app: {{ .Release.Name }}
+    app: {{ .Values.deployment.labels.app }}
 spec:
-  replicas: {{ .Values.replicaCount }}
+  replicas: {{ .Values.deployment.replicas }}
   selector:
     matchLabels:
-      app: {{ .Release.Name }}
+      app: {{ .Values.deployment.labels.app }}
   template:
     metadata:
       labels:
-        app: {{ .Release.Name }}
+        app: {{ .Values.deployment.labels.app }}
     spec:
       containers:
-        - name: {{ .Release.Name }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+        - name: {{ .Values.deployment.name }}
+          image: "{{ .Values.deployment.image.repository }}:{{ .Values.deployment.image.tag }}"
+          imagePullPolicy: {{ .Values.deployment.image.pullPolicy }}
           ports:
-            - containerPort: {{ .Values.containerPort }}
+            - containerPort: {{ .Values.deployment.containerPort }}
           env:
             - name: MONGO_HOST
               valueFrom:
                 configMapKeyRef:
-                  name: {{ .Values.env.mongoHost.configMapName }}
-                  key: {{ .Values.env.mongoHost.key }}
+                  name: {{ .Values.deployment.env.mongoHost.configMapName }}
+                  key: {{ .Values.deployment.env.mongoHost.key }}
             - name: MONGO_PORT
               valueFrom:
                 configMapKeyRef:
-                  name: {{ .Values.env.mongoPort.configMapName }}
-                  key: {{ .Values.env.mongoPort.key }}
+                  name: {{ .Values.deployment.env.mongoPort.configMapName }}
+                  key: {{ .Values.deployment.env.mongoPort.key }}
             - name: MONGO_DB
               valueFrom:
                 configMapKeyRef:
-                  name: {{ .Values.env.mongoDb.configMapName }}
-                  key: {{ .Values.env.mongoDb.key }}
+                  name: {{ .Values.deployment.env.mongoDb.configMapName }}
+                  key: {{ .Values.deployment.env.mongoDb.key }}
             - name: PORT
-              value: "{{ .Values.env.appPort }}"
+              value: "{{ .Values.deployment.env.appPort }}"
