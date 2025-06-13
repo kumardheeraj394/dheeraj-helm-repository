@@ -33,7 +33,6 @@ service:
   protocol: TCP
   selector:
     app: nodejsdbapp
-
 configmap:
   name: mongo-config
   labels:
@@ -65,7 +64,7 @@ statefulset:
     size: 1Gi
   labels:
     app: mongodb
-
+    
 mongoService:
   name: mongodb
   labels:
@@ -75,3 +74,7 @@ mongoService:
   targetPort: 27017
   selector:
     app: mongodb
+
+namespace:
+  enabled: true
+  name: nodejsdbapp
